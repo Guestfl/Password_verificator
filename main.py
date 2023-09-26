@@ -2,10 +2,6 @@ import re
 import requests
 import hashlib
 
-import time
-
-start_time = time.time()  # Запомнить время начала выполнения
-
 
 def check_rules(password: str) -> bool:
     # Проверка длины пароля
@@ -47,20 +43,16 @@ def is_password_pwned(password: str) -> int:
 
 if __name__ == '__main__':
     while True:  # Обработчик ввода
-        # full_name = input("Введите полный путь к файлу для корректной работы программы: ")
+        full_name = input("Введите полный путь к файлу для корректной работы программы: ")
         try:
-            with open("test_data.txt", 'r') as file:
+            with open(full_name, 'r') as file:
                 for line in file:
                     if check_rules(line.strip()):
-                        # pwned_result = is_password_pwned(line.strip())
-                        # if pwned_result > 0:
-                        #     print(f"{line.strip()} [Согласно базам данных HIBP данный пароль был скомпрометирован {pwned_result} раз]")
-                        # else:
-                        #     print(f"{line.strip()} [Согласно базам данных HIBP данный пароль не был скомпрометирован]")
-                        print(line.strip())
+                        pwned_result = is_password_pwned(line.strip())
+                        if pwned_result > 0:
+                            print(f"{line.strip()} [Согласно базам данных HIBP данный пароль был скомпрометирован {pwned_result} раз]")
+                        else:
+                            print(f"{line.strip()} [Согласно базам данных HIBP данный пароль не был скомпрометирован]")
             break  # Выход из цикла, если файл успешно обработан
         except FileNotFoundError:
             print("Файл не найден: No such file or directory")
-    end_time = time.time()  # Запомнить время окончания выполнения
-    elapsed_time = end_time - start_time  # Вычислить время выполнения
-    print(f"Время выполнения: {elapsed_time} секунд")
